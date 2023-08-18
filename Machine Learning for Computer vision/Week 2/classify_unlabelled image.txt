@@ -1,0 +1,28 @@
+img = imread("ocean.jpg");      % Load the unlabeled image
+load gcClassifierSaturation.mat % Load the model trained using hand-selected features
+load gcClassifierBag.mat        % Load the model trained using automatically generated features
+load bag.mat                    % Load bag of visual words object created by bagOfFeatures
+
+% Paste your code from "predictUnlabeledGroundCoverImage.mlx" here:
+imshow(img);
+gcTableSaturation = extractRoadSideFeature(img);
+featNames = "f" + string(1:500);
+bag1 = encode(bag, img);
+gcTableBag = array2table(bag1,"VariableNames",featNames);
+
+gcTableSaturation.prediction = gcClassifierSaturation.predictFcn(gcTableSaturation)
+gcTableBag.prediction = gcClassifierBag.predictFcn(gcTableBag)
+
+
+%%
+function gcTableSaturation = extractRoadSideFeature(img)
+
+imgHSV = rgb2hsv(img); % Convert an RGB image to HSV
+img1 = imgHSV(:,:,2); % Save the image saturation data
+
+avgSat = mean(img1(:));
+stdSat = std(img1(:));
+gcTableSaturation = table(avgSat,stdSat);
+end
+
+%written by pythoner-code(Himanshu)
