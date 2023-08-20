@@ -26,13 +26,14 @@ mask = bwareafilt(mask, [500, inf]);
 mask = imclose(mask, se);
 
 
-% Uncomment below to view your optical flow vectors on your masked image
 maskedFrame = frame2; maskedFrame(repmat(~mask, [1 1 3])) = 0;
 imshow(frame2)
 hold on
 plot(flow,"DecimationFactor",[15 15],"ScaleFactor",7)
 hold off
 figure
+
 imshow(maskedFrame)
+
 
 %written by pythoner-code(Himanshu)
